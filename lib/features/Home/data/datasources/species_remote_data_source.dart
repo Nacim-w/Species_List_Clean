@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import '../../../../core/network/dio_client.dart';
 import '../models/species_model.dart';
 
@@ -14,14 +13,10 @@ class SpeciesRemoteDataSource {
 
   SpeciesRemoteDataSource({required this.dioClient});
 
-  Future<PaginatedSpeciesResponse> getSpecies({
-    required int page,
-    CancelToken? cancelToken,
-  }) async {
+  Future<PaginatedSpeciesResponse> getSpecies({required int page}) async {
     final response = await dioClient.get(
       '/species/',
       queryParameters: {'page': page},
-      cancelToken: cancelToken,
     );
 
     final List results = response.data['results'];

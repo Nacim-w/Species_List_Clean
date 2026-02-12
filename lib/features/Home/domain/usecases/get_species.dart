@@ -7,10 +7,7 @@ class GetSpecies {
 
   GetSpecies(this.repository);
 
-  Future<PaginatedSpeciesResponse> call({
-    required int page,
-    CancelToken? cancelToken,
-  }) {
-    return repository.getSpecies(page: page, cancelToken: cancelToken);
+  Future<PaginatedSpeciesResponse> call({required int page}) {
+    return repository.getSpecies(page: page);
   }
 }

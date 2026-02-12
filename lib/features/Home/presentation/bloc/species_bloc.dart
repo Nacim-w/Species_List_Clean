@@ -27,10 +27,7 @@ class SpeciesBloc extends Bloc<SpeciesEvent, SpeciesState> {
     emit(state.copyWith(isLoading: true, loadingButton: state.loadingButton));
 
     try {
-      final result = await getSpecies(
-        page: state.currentPage,
-        cancelToken: _cancelToken,
-      );
+      final result = await getSpecies(page: state.currentPage);
 
       emit(
         state.copyWith(
