@@ -1,0 +1,16 @@
+import 'package:dio/dio.dart';
+import '../../data/datasources/species_remote_data_source.dart';
+import '../repositories/species_repository.dart';
+
+class GetSpecies {
+  final SpeciesRepository repository;
+
+  GetSpecies(this.repository);
+
+  Future<PaginatedSpeciesResponse> call({
+    required int page,
+    CancelToken? cancelToken,
+  }) {
+    return repository.getSpecies(page: page, cancelToken: cancelToken);
+  }
+}
