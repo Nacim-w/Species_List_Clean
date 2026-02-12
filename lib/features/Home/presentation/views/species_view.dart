@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:list_test/core/extensions/text_style_extension.dart';
-import 'package:list_test/core/res/styles/text.dart';
+import 'package:list_test/app/styles/app_styles.dart';
 import '../bloc/species_bloc.dart';
 import '../bloc/events/species_event.dart';
 import '../bloc/states/species_state.dart';
@@ -22,7 +21,7 @@ class SpeciesView extends StatelessWidget {
                 itemCount: species.length,
                 itemBuilder: (_, i) => ListTile(
                   title: Text(species[i].name),
-                  subtitle: Text(species[i].description),
+                  subtitle: Text(species[i].classification),
                 ),
               ),
             ),
@@ -44,7 +43,7 @@ class SpeciesView extends StatelessWidget {
                           width: 16,
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
-                      : Text('Prev', style: TextStyles.textBoldSmall.orange1),
+                      : Text('Prev', style: AppStyles.caption.bold().accent()),
                 ),
                 const SizedBox(width: 16),
                 ElevatedButton(
@@ -57,12 +56,11 @@ class SpeciesView extends StatelessWidget {
                           width: 16,
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
-                      : Text('Next', style: TextStyles.textBoldSmall.orange1),
+                      : Text('Next', style: AppStyles.caption.bold().accent()),
                 ),
               ],
             ),
           ),
-
           const SizedBox(height: 12),
         ],
       ),

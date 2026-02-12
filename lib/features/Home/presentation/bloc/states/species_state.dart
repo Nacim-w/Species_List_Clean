@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
-import '../../../domain/entities/species.dart';
+import 'package:list_test/features/Home/data/models/species_model.dart';
 
 class SpeciesState extends Equatable {
-  final List<Species> species;
+  final List<SpeciesModel> species;
   final bool isLoading;
   final int currentPage;
   final bool hasNextPage;
@@ -19,7 +19,7 @@ class SpeciesState extends Equatable {
   });
 
   SpeciesState copyWith({
-    List<Species>? species,
+    List<SpeciesModel>? species,
     bool? isLoading,
     int? currentPage,
     bool? hasNextPage,

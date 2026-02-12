@@ -1,27 +1,22 @@
-import '../../domain/entities/species.dart';
+import 'package:equatable/equatable.dart';
 
-class SpeciesModel extends Species {
-  SpeciesModel({required super.name, required super.description});
+class SpeciesModel extends Equatable {
+  final String name;
+  final String classification;
 
-  factory SpeciesModel.empty() {
-    return SpeciesModel(name: '', description: '');
-  }
+  const SpeciesModel({required this.name, required this.classification});
 
   factory SpeciesModel.fromJson(Map<String, dynamic> json) {
     return SpeciesModel(
       name: json['name'] ?? '',
-      description: json['classification'] ?? '',
+      classification: json['classification'] ?? '',
     );
   }
 
   Map<String, dynamic> toJson() {
-    return {'name': name, 'classification': description};
+    return {'name': name, 'classification': classification};
   }
 
-  SpeciesModel copyWith({String? name, String? description}) {
-    return SpeciesModel(
-      name: name ?? this.name,
-      description: description ?? this.description,
-    );
-  }
+  @override
+  List<Object?> get props => [name, classification];
 }

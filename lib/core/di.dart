@@ -1,17 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
-import 'package:list_test/features/Home/domain/repositories/species_repository.dart';
-
-import '../features/Home/data/datasources/species_remote_data_source.dart';
-import '../features/Home/data/repo/species_repository_impl.dart';
-import '../features/Home/domain/usecases/get_species.dart';
-import '../features/Home/presentation/bloc/species_bloc.dart';
+import 'package:list_test/features/Home/data/repo/species_repository.dart';
 import 'network/dio_client.dart';
+import '../features/Home/presentation/bloc/species_bloc.dart';
 
 final sl = GetIt.instance;
 
 void init() {
-  // Dio
   sl.registerLazySingleton(
     () => Dio(
       BaseOptions(
@@ -22,18 +17,12 @@ void init() {
     ),
   );
 
+  // Dio client
   sl.registerLazySingleton(() => DioClient(sl()));
 
-  // Data source
-  sl.registerLazySingleton(() => SpeciesRemoteDataSource(dioClient: sl()));
-
-  // Repository
-  sl.registerLazySingleton<SpeciesRepository>(
-    () => SpeciesRepositoryImpl(remoteDataSource: sl()),
-  );
-  // Use case
-  sl.registerLazySingleton(() => GetSpecies(sl()));
+  // Repository (datasource)
+  sl.registerLazySingleton(() => SpeciesRepository(sl()));
 
   // Bloc
-  sl.registerFactory(() => SpeciesBloc(getSpecies: sl()));
+  sl.registerFactory(() => SpeciesBloc(sl()));
 }
