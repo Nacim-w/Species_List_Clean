@@ -21,8 +21,9 @@ void init() {
   sl.registerLazySingleton(() => DioClient(sl()));
 
   // Repository (datasource)
-  sl.registerLazySingleton(() => SpeciesRepository(sl()));
-
+  sl.registerLazySingleton<SpeciesRepository>(
+    () => SpeciesRepositoryImpl(dioClient: sl()),
+  );
   // Bloc
   sl.registerFactory(() => SpeciesBloc(sl()));
 }
