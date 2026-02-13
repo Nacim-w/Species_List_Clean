@@ -14,11 +14,10 @@ class SpeciesView extends StatelessWidget {
       appBar: AppBar(title: const Text('Species')),
       body: BlocBuilder<SpeciesBloc, SpeciesState>(
         builder: (context, state) {
-          // Show full-screen loading if first page is loading
           if (state.isLoading && state.species.isEmpty) {
             return const Center(child: CircularProgressIndicator());
           }
-          // Show error if there is one and no data
+
           if (state.errorMessage != null && state.species.isEmpty) {
             return Center(
               child: Text(
@@ -28,58 +27,33 @@ class SpeciesView extends StatelessWidget {
             );
           }
 
-          return Column(
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  itemCount: state.species.length,
-                  itemBuilder: (_, i) => ListTile(
-                    title: Text(state.species[i].name),
-                    subtitle: Text(state.species[i].classification),
-                  ),
-                ),
-              ),
+          return NotificationListener<ScrollNotification>(
+            onNotification: (notification) {
+              if (notification.metrics.pixels >=
+                  notification.metrics.maxScrollExtent * 0.8) {
+                context.read<SpeciesBloc>().add(LoadNextPageIfNeeded());
+              }
+              return false;
+            },
+            child: ListView.builder(
+              itemCount: state.species.length + 1,
+              itemBuilder: (_, i) {
+                if (i < state.species.length) {
+                  final species = state.species[i];
+                  return ListTile(
+                    title: Text(species.name),
+                    subtitle: Text(species.classification),
+                  );
+                }
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    onPressed: (!state.isLoading && state.currentPage > 1)
-                        ? () => context.read<SpeciesBloc>().add(
-                            PreviousPageEvent(),
-                          )
-                        : null,
-                    child: (state.isLoading && state.loadingButton == "prev")
-                        ? const SizedBox(
-                            height: 16,
-                            width: 16,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          )
-                        : Text(
-                            'Prev',
-                            style: AppStyles.caption.bold().accent(),
-                          ),
-                  ),
-                  const SizedBox(width: 16),
-                  ElevatedButton(
-                    onPressed: (!state.isLoading && state.hasNextPage)
-                        ? () => context.read<SpeciesBloc>().add(NextPageEvent())
-                        : null,
-                    child: (state.isLoading && state.loadingButton == "next")
-                        ? const SizedBox(
-                            height: 16,
-                            width: 16,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          )
-                        : Text(
-                            'Next',
-                            style: AppStyles.caption.bold().accent(),
-                          ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 12),
-            ],
+                return state.isLoading
+                    ? const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 16),
+                        child: Center(child: CircularProgressIndicator()),
+                      )
+                    : const SizedBox.shrink();
+              },
+            ),
           );
         },
       ),

@@ -1,7 +1,6 @@
 import 'package:generic_requester/generic_requester.dart';
 import 'package:list_test/features/Home/data/models/species_model.dart';
 
-/// Response object for paginated species, decodable by `generic_requester`.
 class PaginatedSpeciesResponse extends ModelingProtocol {
   final List<SpeciesModel> species;
   final bool hasNextPage;
@@ -22,7 +21,6 @@ class PaginatedSpeciesResponse extends ModelingProtocol {
 
 /// Abstract repository interface
 abstract class SpeciesRepository {
-  /// Returns Either a failure (Exception) or a paginated response
   Future<Either<Exception, PaginatedSpeciesResponse>> getSpecies({
     required int page,
   });

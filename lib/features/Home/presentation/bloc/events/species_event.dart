@@ -7,6 +7,4 @@ abstract class SpeciesEvent extends Equatable {
 
 class FetchSpeciesEvent extends SpeciesEvent {}
 
-class NextPageEvent extends SpeciesEvent {}
-
-class PreviousPageEvent extends SpeciesEvent {}
+class LoadNextPageIfNeeded extends SpeciesEvent {}

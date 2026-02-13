@@ -7,7 +7,6 @@ class SpeciesState extends Equatable {
   final int currentPage;
   final bool hasNextPage;
   final String? errorMessage;
-  final String? loadingButton; // "prev", "next", or null
 
   const SpeciesState({
     this.species = const [],
@@ -15,7 +14,6 @@ class SpeciesState extends Equatable {
     this.currentPage = 1,
     this.hasNextPage = true,
     this.errorMessage,
-    this.loadingButton,
   });
 
   SpeciesState copyWith({
@@ -24,7 +22,6 @@ class SpeciesState extends Equatable {
     int? currentPage,
     bool? hasNextPage,
     String? errorMessage,
-    String? loadingButton,
   }) {
     return SpeciesState(
       species: species ?? this.species,
@@ -32,7 +29,6 @@ class SpeciesState extends Equatable {
       currentPage: currentPage ?? this.currentPage,
       hasNextPage: hasNextPage ?? this.hasNextPage,
       errorMessage: errorMessage,
-      loadingButton: loadingButton,
     );
   }
 
@@ -43,6 +39,5 @@ class SpeciesState extends Equatable {
     currentPage,
     hasNextPage,
     errorMessage,
-    loadingButton,
   ];
 }
