@@ -1,51 +1,52 @@
-import 'package:dartz/dartz.dart';
-import 'package:list_test/core/network/dio_client.dart';
+import 'package:generic_requester/generic_requester.dart';
 import 'package:list_test/features/Home/data/models/species_model.dart';
 
-/// Response object for paginated species
-class PaginatedSpeciesResponse {
+/// Response object for paginated species, decodable by `generic_requester`.
+class PaginatedSpeciesResponse extends ModelingProtocol {
   final List<SpeciesModel> species;
   final bool hasNextPage;
 
   PaginatedSpeciesResponse({required this.species, required this.hasNextPage});
+
+  @override
+  PaginatedSpeciesResponse fromJson(json) {
+    final List results = (json['results'] as List?) ?? [];
+    return PaginatedSpeciesResponse(
+      species: results
+          .map((e) => SpeciesModel.fromJson((e as Map).cast<String, dynamic>()))
+          .toList(),
+      hasNextPage: json['next'] != null,
+    );
+  }
 }
 
 /// Abstract repository interface
 abstract class SpeciesRepository {
-  final DioClient dioClient;
-
-  SpeciesRepository({required this.dioClient});
-
   /// Returns Either a failure (Exception) or a paginated response
   Future<Either<Exception, PaginatedSpeciesResponse>> getSpecies({
     required int page,
   });
 }
 
-/// Implementation of SpeciesRepository
+/// Implementation of SpeciesRepository using `generic_requester`.
 class SpeciesRepositoryImpl extends SpeciesRepository {
-  SpeciesRepositoryImpl({required super.dioClient});
+  SpeciesRepositoryImpl();
 
   @override
   Future<Either<Exception, PaginatedSpeciesResponse>> getSpecies({
     required int page,
   }) async {
-    try {
-      final response = await dioClient.get(
-        '/species/',
-        queryParameters: {'page': page},
-      );
+    final requestPerformer = RequestPerformer(Dio());
 
-      final List results = response.data['results'];
-
-      final data = PaginatedSpeciesResponse(
-        species: results.map((e) => SpeciesModel.fromJson(e)).toList(),
-        hasNextPage: response.data['next'] != null,
-      );
-
-      return Right(data);
-    } catch (e) {
-      return Left(Exception(e.toString()));
-    }
+    return await requestPerformer.performDecodingRequest(
+      baseUrl: 'https://swapi.dev/api',
+      path: '/species/',
+      method: RestfulMethods.get,
+      queryParameters: {'page': page},
+      decodableModel: PaginatedSpeciesResponse(
+        species: const [],
+        hasNextPage: false,
+      ),
+    );
   }
 }

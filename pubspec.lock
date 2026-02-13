@@ -131,6 +131,15 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  generic_requester:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: HEAD
+      resolved-ref: "573571a1eacebee601ab453f3b0feb51c1e4ba21"
+      url: "https://github.com/Jewelch/generic_requester.git"
+    source: git
+    version: "1.0.0"
   get_it:
     dependency: "direct main"
     description:
